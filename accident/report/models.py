@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -29,5 +30,19 @@ class Report(models.Model):
         (AGEGE,'Agege')
     )
     Location = models.CharField(max_length=20,choices=STATUS_LOCATION,default=AGEGE)
+    number_of_vehicle_involved = models.PositiveIntegerField(default=0)
+    number_of_injured = models.PositiveIntegerField()
+    number_of_death = models.PositiveIntegerField()
+    cause_of_accident = models.CharField(max_length=255)
+    description = models.TextField('Describe what happened')
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    image = models.ImageField(upload_to='images')
+    video = models.FileField(upload_to='videos')
 
+    def __str__(self):
+        return f'Accident report by {self.Witness_Name}'
+    
+    def get_absolute_url(self):
+        return reverse('report', kwargs={'id': self.id})
 
